@@ -28,6 +28,14 @@ class Wallet extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.buttonClick = this.buttonClick.bind(this);
     this.requestApi = this.requestApi.bind(this);
+    this.renderInput = this.renderInput.bind(this);
+    this.renderSelect = this.renderSelect.bind(this);
+  }
+  // consegui resolver o problema atraves da trede da Maria Laura
+  // https://trybecourse.slack.com/archives/C0273HYKPGT/p1637697064072000
+
+  componentDidMount() {
+    this.requestApi();
   }
 
   handleChange({ target }) {
@@ -35,8 +43,10 @@ class Wallet extends React.Component {
     this.setState({ [id]: value });
   }
 
-  // usei o repositorio do Marcelo para ver como fazer a requisição
+  // Fui ver o repositorio do marcelo para ver como ele estava fazendo a requisição para ver se tinha cometido algum erro(o erro era no Header e no componentDidMount)
+  // mas vi que a forma ao qual fez a requisção deixou o codigo mas limpo e sem varios arquivos resolvi implementar a referência esta abaixo
   // https://github.com/tryber/sd-015-a-project-trybewallet/pull/126
+
   async requestApi() {
     const api = 'https://economia.awesomeapi.com.br/json/all';
     const response = await fetch(api);
@@ -49,53 +59,78 @@ class Wallet extends React.Component {
     const { currencySave } = this.props;
     const { id } = this.state;
     currencySave(this.state);
-    const idNome = id + 1;
+    const idNovo = id + 1;
     this.setState({
-      id: idNome,
+      id: idNovo,
+      value: '',
+      description: '',
     });
   }
 
-  render() {
-    const { mystate } = this.props;
+  renderInput() {
+    const { value, description } = this.state;
     return (
       <div>
-        <Header mystate={ mystate } />
-        <form onSubmit={ this.click }>
-          <input
-            type="text"
-            data-testid="value-input"
-            id="value"
-            placeholder="Valor"
-            onChange={ this.handleChange }
-          />
-          <input
-            type="text"
-            data-testid="description-input"
-            id="description"
-            placeholder="Descrição"
-            onChange={ this.handleChange }
-          />
-          <select
-            id="currency"
-            data-testid="currency-input"
-            onChange={ this.handleChange }
-          >
-            { currencyTy.map((obj) => (<option key={ obj } value={ obj }>{obj}</option>))}
-          </select>
-          <select
-            id="method"
-            data-testid="method-input"
-            onChange={ this.handleChange }
-          >
-            { methodTy.map((obj) => (<option key={ obj } value={ obj }>{obj}</option>))}
-          </select>
-          <select
-            id="tag"
-            data-testid="tag-input"
-            onChange={ this.handleChange }
-          >
-            { tagTy.map((obj) => (<option key={ obj } value={ obj }>{obj}</option>))}
-          </select>
+        <input
+          type="text"
+          data-testid="value-input"
+          id="value"
+          value={ value }
+          placeholder="Valor"
+          onChange={ this.handleChange }
+        />
+        <input
+          type="text"
+          data-testid="description-input"
+          value={ description }
+          id="description"
+          placeholder="Descrição"
+          onChange={ this.handleChange }
+        />
+      </div>
+    );
+  }
+
+  renderSelect() {
+    const { currency, method, tag } = this.state;
+    return (
+      <div>
+        <select
+          id="currency"
+          data-testid="currency-input"
+          onChange={ this.handleChange }
+          value={ currency }
+        >
+          { currencyTy.map((obj) => (<option key={ obj } value={ obj }>{obj}</option>))}
+        </select>
+        <select
+          id="method"
+          data-testid="method-input"
+          onChange={ this.handleChange }
+          value={ method }
+
+        >
+          { methodTy.map((obj) => (<option key={ obj } value={ obj }>{obj}</option>))}
+        </select>
+        <select
+          id="tag"
+          value={ tag }
+          data-testid="tag-input"
+          onChange={ this.handleChange }
+        >
+          { tagTy.map((obj) => (<option key={ obj } value={ obj }>{obj}</option>))}
+        </select>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        <Header />
+        <form>
+          {this.renderInput()}
+          {this.renderSelect()}
           <button type="button" onClick={ this.buttonClick }>Adicionar despesa</button>
         </form>
       </div>
@@ -103,17 +138,12 @@ class Wallet extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  mystate: state.user.email,
-});
-
 const mapDispatchToProps = (dispatch) => ({
   currencySave: (payload) => dispatch(currencyInfo(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
+export default connect(null, mapDispatchToProps)(Wallet);
 
 Wallet.propTypes = {
-  mystate: PropTypes.string.isRequired,
   currencySave: PropTypes.func.isRequired,
 };
