@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from './Header';
 import { currencyInfo } from '../actions';
+import TabelaGastos from './TabelaGastos';
 
 const methodTy = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
 const tagTy = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
@@ -141,6 +142,7 @@ class Wallet extends React.Component {
           {this.renderInput()}
           {this.renderSelect()}
           <button type="button" onClick={ this.buttonClick }>Adicionar despesa</button>
+          <TabelaGastos />
         </form>
       </div>
     );
