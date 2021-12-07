@@ -1,15 +1,10 @@
+/* eslint-disable space-before-blocks */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from './Header';
 import { currencyInfo } from '../actions';
 
-const currencyTy = [
-  'USD', 'CAD', 'EUR',
-  'GBP', 'ARS', 'BTC',
-  'LTC', 'JPY', 'CHF',
-  'AUD', 'CNY', 'ILS',
-  'ETH', 'XRP'];
 const methodTy = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
 const tagTy = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 
@@ -92,34 +87,48 @@ class Wallet extends React.Component {
   }
 
   renderSelect() {
-    const { currency, method, tag } = this.state;
+    const { currency, method, tag, exchangeRates } = this.state;
+    // Usar Map, Filter ... em Objetos => https://www.horadecodar.com.br/2021/05/24/como-utilizar-a-funcao-map-em-objetos-em-javascript/
+    const objKeys = Object.keys(exchangeRates);
+    const filter = objKeys.filter((obj) => obj !== 'USDT' && obj !== 'DOGE');
     return (
       <div>
-        <select
-          id="currency"
-          data-testid="currency-input"
-          onChange={ this.handleChange }
-          value={ currency }
-        >
-          { currencyTy.map((obj) => (<option key={ obj } value={ obj }>{obj}</option>))}
-        </select>
-        <select
-          id="method"
-          data-testid="method-input"
-          onChange={ this.handleChange }
-          value={ method }
+        <label htmlFor="currency">
+          Moeda
+          <select
+            id="currency"
+            name="currency"
+            data-testid="currency-input"
+            onChange={ this.handleChange }
+            value={ currency }
+          >
+            {filter.map((obj) => (
+              <option key={ obj } value={ obj } data-testid={ obj }>{obj}</option>))}
+          </select>
+        </label>
+        <label htmlFor="method">
+          Método
+          <select
+            id="method"
+            data-testid="method-input"
+            onChange={ this.handleChange }
+            value={ method }
 
-        >
-          { methodTy.map((obj) => (<option key={ obj } value={ obj }>{obj}</option>))}
-        </select>
-        <select
-          id="tag"
-          value={ tag }
-          data-testid="tag-input"
-          onChange={ this.handleChange }
-        >
-          { tagTy.map((obj) => (<option key={ obj } value={ obj }>{obj}</option>))}
-        </select>
+          >
+            { methodTy.map((obj) => (<option key={ obj } value={ obj }>{obj}</option>))}
+          </select>
+        </label>
+        <label htmlFor="tag">
+          Tag
+          <select
+            id="tag"
+            value={ tag }
+            data-testid="tag-input"
+            onChange={ this.handleChange }
+          >
+            { tagTy.map((obj) => (<option key={ obj } value={ obj }>{obj}</option>))}
+          </select>
+        </label>
       </div>
     );
   }
