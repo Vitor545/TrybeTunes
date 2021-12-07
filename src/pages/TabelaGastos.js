@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class TabelaGastos extends Component {
   constructor(props) {
@@ -7,11 +8,10 @@ class TabelaGastos extends Component {
     this.state = { };
   }
 
+  // Source para lembrar de como fazer uma tabela https://www.w3schools.com/tags/tag_tbody.asp
+  // https://blog.betrybe.com/html/table-html/
   render() {
-    // Source para lembrar de como fazer uma tabela https://www.w3schools.com/tags/tag_tbody.asp
-    // https://blog.betrybe.com/html/table-html/
     const { expenses } = this.props;
-    console.log(expenses);
     return (
       <table>
         <thead>
@@ -36,11 +36,19 @@ class TabelaGastos extends Component {
                 <td key={ obj.tag }>{ obj.tag }</td>
                 <td key={ obj.method }>{ obj.method }</td>
                 <td key={ obj.value }>{ obj.value }</td>
-                <td key={ obj.currency }>{ obj.currency }</td>
+                <td
+                  key={ obj.exchangeRates[currency].name }
+                >
+                  { obj.exchangeRates[currency].name }
+                </td>
                 <td
                   key={ obj.exchangeRates[currency].ask }
                 >
-                  { obj.exchangeRates[currency].ask }
+                  { // Quebrei a cabeça para entender oque estava errado, mas ao olhar o repositorio do marcelo descobri que não estava transformando para number
+                  // Source: https://github.com/tryber/sd-015-a-project-trybewallet/pull/126/files
+                  // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed#utilizando_tofixed
+                  }
+                  { Number(obj.exchangeRates[currency].ask).toFixed(2) }
                 </td>
                 <td>{value * exchangeRates[currency].ask }</td>
                 <td>Real</td>
@@ -59,3 +67,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(TabelaGastos);
+
+TabelaGastos.propTypes = {
+  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
