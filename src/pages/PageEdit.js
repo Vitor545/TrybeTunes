@@ -9,6 +9,7 @@ const tagTy = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 class PageEdit extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       value: '',
       description: '',
@@ -19,13 +20,13 @@ class PageEdit extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.buttonClick = this.buttonClick.bind(this);
-    this.requestApi = this.requestApi.bind(this);
+    this.requestInfo = this.requestInfo.bind(this);
     this.renderInput = this.renderInput.bind(this);
     this.renderSelect = this.renderSelect.bind(this);
   }
 
   componentDidMount() {
-    this.requestApi();
+    this.requestInfo();
   }
 
   handleChange({ target }) {
@@ -33,19 +34,21 @@ class PageEdit extends React.Component {
     this.setState({ [id]: value });
   }
 
-  async requestApi() {
-    const api = 'https://economia.awesomeapi.com.br/json/all';
-    const response = await fetch(api);
-    const data = await response.json();
-    const { editId } = this.props;
-    const id = 'id';
-    return this.setState({ exchangeRates: data, [id]: editId });
+  // COnsultei o repositorio da Cassia para resolver o problema que estava acontecendo (não estava encontrando exchangeRates)
+  // Source: https://github.com/tryber/sd-015-a-project-trybewallet/pull/116/files
+  requestInfo() {
+    const { editId, expenses } = this.props;
+    const filter = expenses.find((obj) => obj.id === editId);
+    this.setState({ ...filter });
   }
 
   buttonClick() {
     const { editId, expenses, editAct } = this.props;
     const filterExpenses = expenses.filter((obj) => obj.id !== editId);
     const arrayFinal = [...filterExpenses, this.state];
+    // Usei esse Source e o repositorio da Cassia para fazer a logica de ordenar
+    // https://github.com/tryber/sd-015-a-project-trybewallet/pull/116/files
+    // https://ricardo-reis.medium.com/o-m%C3%A9todo-sort-do-array-javascript-482576734e0a
     const sortArrayFinal = arrayFinal.sort((a, b) => a.id - b.id);
     editAct(sortArrayFinal);
   }

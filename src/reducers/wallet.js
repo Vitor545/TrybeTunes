@@ -1,5 +1,6 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
-import { CURRENCY_INFO, DELETE_INFO, EDIT_INFO, ACTION_EDIT } from '../actions';
+import { CURRENCY_INFO,
+  DELETE_INFO, EDIT_INFO, ACTION_EDIT } from '../actions';
 
 const WALLET_STATE = {
   expenses: [],
