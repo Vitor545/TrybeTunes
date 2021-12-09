@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteState } from '../actions';
+import { deleteState, editState } from '../actions';
 
 // Quebrei a cabeça para entender oque estava errado, mas ao olhar o repositorio do marcelo descobri que não estava transformando para number no cambio
 // Source: https://github.com/tryber/sd-015-a-project-trybewallet/pull/126/files
@@ -12,6 +12,12 @@ class TabelaGastos extends Component {
     this.state = { };
     this.gerarTabela = this.gerarTabela.bind(this);
     this.clickButton = this.clickButton.bind(this);
+    this.clickButtonEdit = this.clickButtonEdit.bind(this);
+  }
+
+  clickButtonEdit(id) {
+    const { editObj } = this.props;
+    editObj(id);
   }
 
   clickButton(id) {
@@ -46,10 +52,11 @@ class TabelaGastos extends Component {
             <button
               type="button"
               data-testid="edit-btn"
+              onClick={ () => this.clickButtonEdit(obj.id) }
             >
               Editar
             </button>
-            {// ocorreu um erro relacionado ao onCLick { () => } consehui resolver atraves do repositorio da Cassia https://github.com/tryber/sd-015-a-project-trybewallet/pull/116/files
+            {// ocorreu um erro relacionado ao onCLick { () => } consegui resolver através do repositorio da Cassia https://github.com/tryber/sd-015-a-project-trybewallet/pull/116/files
             }
             <button
               type="button"
@@ -96,6 +103,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispacthToProps = (dispatch) => ({
   deleteObj: (payload) => dispatch(deleteState(payload)),
+  editObj: (payload) => dispatch(editState(payload)),
 });
 
 export default connect(mapStateToProps, mapDispacthToProps)(TabelaGastos);
@@ -103,4 +111,5 @@ export default connect(mapStateToProps, mapDispacthToProps)(TabelaGastos);
 TabelaGastos.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   deleteObj: PropTypes.func.isRequired,
+  editObj: PropTypes.func.isRequired,
 };
