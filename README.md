@@ -1,4 +1,4 @@
-## Projeto TrybeWallet
+## Projeto Trybe Wallet
  
 <h3 align='center'> 💸 Controle seu dinheiro para que ele não controle você </h3>
 
@@ -31,7 +31,7 @@
 <h3 align='center'> 🌎 Rodando no navegador</h3>
 
 - Você pode clicar no link para ser redirecionado ao site:
-[TrybeWallet-Em andamento]()
+[Trybe Wallet](https://trybewalletvitor.netlify.app/)
 
 
 <br/>
