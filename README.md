@@ -6,6 +6,8 @@
 
 **Nem sempre sabemos oque estamos fazendo com nosso dinheiro né?** Nesse projeto eu criei uma aplicação que `computa gastos em diferentes moedas` e `converte tudo para uma única moeda`, que pode ser escolhida por quem usa. Para obter as informações sobre os nomes, cotações e outros dados sobre as moedas foi usado uma `API de Cotações de Moedas chamada Awesomeapi` . Tudo isso `usando o Redux para compartilhar o estado da aplicação` entre seus vários componentes.
 
+<img src="ezgif.com-gif-maker (1).gif"></img>
+
 <br/>
 
 
